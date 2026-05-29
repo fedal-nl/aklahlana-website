@@ -1,2 +1,2 @@
 # aklahlana-website
-A reactJS website for the restaurant.
+A ReactJS website for the restaurant.
