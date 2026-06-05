@@ -3,7 +3,6 @@
 # -------------------------
 FROM node:20 AS builder
 
-LABEL org.opencontainers.image.source=https://github.com/fedal-nl/aklahlana-website
 
 WORKDIR /app
 
