@@ -88,14 +88,15 @@ export default function MenuItemRow({
           sx={{
             color: "white",
             fontSize: {
-              xs: "1.5rem",
+              xs: "1.3rem",
               md: "2rem",
             },
             fontWeight: 600,
             lineHeight: 1.35,
           }}
         >
-          {item.name_ar}
+            {/* Display the label if it exists, otherwise display the name */}
+            {item.label_ar ? item.label_ar : item.name_ar}
         </Typography>
       </Box>
     </Box>

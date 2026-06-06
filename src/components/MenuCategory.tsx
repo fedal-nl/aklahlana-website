@@ -29,7 +29,10 @@ export default function MenuCategory({
                 color: "#f4a340",
                 mb: 3,
                 fontWeight: "bold",
-                fontSize: {xs: "2.5rem", sm: "4rem"},
+                fontSize: {
+                    xs: "2.3rem", // phone screens
+                    sm: "4rem", // tablets and up
+                },
             }}      >
         {menu.name_ar}
       </Typography>

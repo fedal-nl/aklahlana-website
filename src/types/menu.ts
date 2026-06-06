@@ -11,6 +11,7 @@ export type MenuItem = {
   price: string
   image: string | null
   ingredients: MenuIngredient[]
+  label_ar: string | null
 }
 
 export type Menu = {
