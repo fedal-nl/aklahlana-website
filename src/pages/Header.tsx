@@ -15,9 +15,9 @@ const contactInfo = {
     "٠٧٧٠٥٦٦٤١٣٣",
   ],
   socials: [
-    "@akelahelna",
-    "facebook.com/akelahelna",
-    "instagram.com/akelahelna",
+    // "@akelahelna",
+    // "facebook.com/akelahelna",
+    // "instagram.com/akelahelna",
   ],
   emails: [
     "info@akelahelna.com",
@@ -72,10 +72,10 @@ export default function Header() {
           label="الهاتف"
           value={contactInfo.phones.join(" / ")}
         />
-        <ContactItem
+        {/* <ContactItem
           label="التواصل"
           value={contactInfo.socials.join(",")}
-        />
+        /> */}
         <ContactItem
           label="البريد"
           value={contactInfo.emails.join(",")}
