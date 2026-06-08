@@ -4,6 +4,13 @@ export type MenuIngredient = {
   price: string
 }
 
+export type Branch = {
+  id: number
+  name: string
+  location: string
+  is_active: boolean
+}
+
 export type MenuItem = {
   id: number
   name_ar: string
@@ -12,6 +19,7 @@ export type MenuItem = {
   image: string | null
   ingredients: MenuIngredient[]
   label_ar: string | null
+  branches: Branch[]
 }
 
 export type Menu = {
