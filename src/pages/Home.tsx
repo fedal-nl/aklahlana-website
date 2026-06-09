@@ -1,5 +1,6 @@
 import Header from "./Header"
 import {
+  useEffect,
   useMemo,
   useState,
 } from "react"
@@ -11,7 +12,13 @@ import {
   Container,
   Typography,
 } from "@mui/material"
-import {fetchMenus} from "../services/menu"
+import {
+  fetchMenus,
+  menusQueryKey,
+  menusStaleTime,
+  readCachedMenus,
+  writeCachedMenus,
+} from "../services/menu"
 
 import type {
   Branch,
@@ -22,15 +29,36 @@ import MenuCategory from "../components/MenuCategory"
 export default function HomePage() {
   const [selectedBranch, setSelectedBranch] =
     useState<Branch | null>(null)
+  const cachedMenus =
+    useMemo(readCachedMenus, [])
   const {
     data: menus = [],
     isLoading,
     isError,
     refetch,
+    dataUpdatedAt,
   } = useQuery({
-    queryKey: ["menus"],
+    queryKey: menusQueryKey,
     queryFn: fetchMenus,
+    staleTime: menusStaleTime,
+    initialData: cachedMenus?.data,
+    initialDataUpdatedAt:
+      cachedMenus?.updatedAt,
   })
+
+  useEffect(() => {
+    if (
+      menus.length > 0 &&
+      dataUpdatedAt !==
+        cachedMenus?.updatedAt
+    ) {
+      writeCachedMenus(menus)
+    }
+  }, [
+    cachedMenus?.updatedAt,
+    dataUpdatedAt,
+    menus,
+  ])
 
   const branches = useMemo(
     () => getBranches(menus),
