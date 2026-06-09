@@ -1,9 +1,9 @@
 import Header from "./Header"
 import {
-  useEffect,
   useMemo,
   useState,
 } from "react"
+import { useQuery } from "@tanstack/react-query"
 
 import {
   Box,
@@ -20,21 +20,17 @@ import type {
 import MenuCategory from "../components/MenuCategory"
 
 export default function HomePage() {
-  const [menus, setMenus] =
-    useState<Menu[]>([])
   const [selectedBranch, setSelectedBranch] =
     useState<Branch | null>(null)
-
-  useEffect(() => {
-    async function load() {
-      const data =
-        await fetchMenus()
-
-      setMenus(data)
-    }
-
-    load()
-  }, [])
+  const {
+    data: menus = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
+    queryKey: ["menus"],
+    queryFn: fetchMenus,
+  })
 
   const branches = useMemo(
     () => getBranches(menus),
@@ -79,7 +75,36 @@ export default function HomePage() {
     >
       <Header />
 
-      {selectedBranch ? (
+      {isLoading ? (
+        <StatusMessage text="جاري تحميل القائمة..." />
+      ) : isError ? (
+        <Box
+          sx={{
+            textAlign: "center",
+            mb: 8,
+          }}
+        >
+          <StatusMessage text="تعذر تحميل القائمة" />
+          <Button
+            type="button"
+            onClick={() => refetch()}
+            variant="outlined"
+            sx={{
+              color: "white",
+              borderColor: "#f4a340",
+              fontWeight: 700,
+              px: 3,
+              "&:hover": {
+                borderColor: "white",
+                backgroundColor:
+                  "rgba(255, 255, 255, 0.08)",
+              },
+            }}
+          >
+            إعادة المحاولة
+          </Button>
+        </Box>
+      ) : selectedBranch ? (
         <>
           <Box
             sx={{
@@ -226,5 +251,28 @@ function getBranches(menus: Menu[]) {
   ).sort(
     (firstBranch, secondBranch) =>
       firstBranch.id - secondBranch.id
+  )
+}
+
+function StatusMessage({
+  text,
+}: {
+  text: string
+}) {
+  return (
+    <Typography
+      sx={{
+        color: "white",
+        textAlign: "center",
+        fontSize: {
+          xs: "1.2rem",
+          sm: "1.5rem",
+        },
+        fontWeight: 700,
+        mb: 8,
+      }}
+    >
+      {text}
+    </Typography>
   )
 }

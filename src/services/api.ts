@@ -1,10 +1,27 @@
-import axios from "axios"
+const apiBaseUrl =
+  import.meta.env.VITE_API_URL ?? ""
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFToken",
-})
+export async function fetchJson<T>(
+  path: string,
+  init?: RequestInit
+) {
+  const response = await fetch(
+    `${apiBaseUrl}${path}`,
+    {
+      ...init,
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        ...init?.headers,
+      },
+    }
+  )
 
-export default api
+  if (!response.ok) {
+    throw new Error(
+      `Request failed with status ${response.status}`
+    )
+  }
+
+  return response.json() as Promise<T>
+}
