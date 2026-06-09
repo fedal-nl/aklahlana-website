@@ -1,9 +1,8 @@
-import api from "./api"
+import type { Menu } from "../types/menu"
+import { fetchJson } from "./api"
 
 export async function fetchMenus() {
-  const response = await api.get(
+  return fetchJson<Menu[]>(
     "/menu/menus/"
   )
-
-  return response.data
 }
