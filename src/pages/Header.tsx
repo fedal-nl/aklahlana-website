@@ -6,13 +6,24 @@ import {
 import homeImage from "../assets/home-img.jpg"
 
 const contactInfo = {
-  addresses: [
-    "الفرع الأول: الجزائر - شارع مستفى ابن غزوان ـ بداخل شارع مركز فنيسيا",
-    "الفرع الثاني: مجمع الأمل السكني 1",
-  ],
-  phones: [
-    "٠٧٨٠٩٠٩٣٥٥٩",
-    "٠٧٧٠٥٦٦٤١٣٣",
+  branches: [
+    {
+      label: "الفرع الأول",
+      address:
+        "الفرع الأول: الجزائر - شارع مستفى ابن غزوان ـ بداخل شارع مركز فنيسيا",
+      phones: [
+        "07809093559",
+        "07705664133",
+      ],
+    },
+    {
+      label: "الفرع الثاني",
+      address: "الفرع الثاني: مجمع الأمل السكني 1",
+      phones: [
+        "07755555902",
+        "07888309991",
+      ],
+    },
   ],
   socials: [
     // "@akelahelna",
@@ -64,14 +75,16 @@ export default function Header() {
           direction: "rtl",
         }}
       >
-        <ContactItem
-          label="العنوان"
-          value={contactInfo.addresses.join(" / ")}
-        />
-        <ContactItem
-          label="الهاتف"
-          value={contactInfo.phones.join(" / ")}
-        />
+        {contactInfo.branches.map(
+          (branch) => (
+            <BranchContact
+              key={branch.address}
+              label={branch.label}
+              address={branch.address}
+              phones={branch.phones}
+            />
+          )
+        )}
         {/* <ContactItem
           label="التواصل"
           value={contactInfo.socials.join(",")}
@@ -81,6 +94,56 @@ export default function Header() {
           value={contactInfo.emails.join(",")}
         />
       </Box>
+    </Box>
+  )
+}
+
+type BranchContactProps = {
+  label: string
+  address: string
+  phones: string[]
+}
+
+function BranchContact({
+  label,
+  address,
+  phones,
+}: BranchContactProps) {
+  return (
+    <Box
+      sx={{
+        color: "white",
+        textAlign: "center",
+        px: {
+          xs: 1.5,
+          sm: 2,
+        },
+        py: 1.25,
+        border: "1px solid rgba(244, 163, 64, 0.45)",
+        borderRadius: 1,
+      }}
+    >
+      <Typography
+        sx={{
+          color: "#f4a340",
+          fontWeight: 700,
+          fontSize: {
+            xs: "1rem",
+            sm: "1.1rem",
+          },
+          mb: 0.75,
+        }}
+      >
+        {label}
+      </Typography>
+      <ContactItem
+        label="العنوان"
+        value={address}
+      />
+      <ContactItem
+        label="الهاتف"
+        value={phones.join(" / ")}
+      />
     </Box>
   )
 }
@@ -99,11 +162,7 @@ function ContactItem({
       sx={{
         color: "white",
         textAlign: "center",
-        px: {
-          xs: 1,
-          sm: 2,
-        },
-        py: 0.75,
+        py: 0.35,
       }}
     >
       <Typography
